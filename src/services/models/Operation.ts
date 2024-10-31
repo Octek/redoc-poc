@@ -57,6 +57,7 @@ export class OperationModel implements IMenuItem {
   sidebarLabel: string;
   description?: string;
   type = 'operation' as const;
+  baseUrl: string;
 
   parent?: GroupModel;
   externalDocs?: OpenAPIExternalDocumentation;
@@ -110,8 +111,14 @@ export class OperationModel implements IMenuItem {
     this.isWebhook = operationSpec.isWebhook;
     this.isEvent = this.isCallback || this.isWebhook;
 
+    {
+      /* UAPI-REDOC_001 */
+    }
     this.name = getOperationSummary(operationSpec);
 
+    {
+      /* UAPI-REDOC_002 */
+    }
     this.sidebarLabel =
       options.sideNavStyle === SideNavStyleEnum.IdOnly
         ? this.operationId || this.path
@@ -156,6 +163,7 @@ export class OperationModel implements IMenuItem {
     if (options.showExtensions) {
       this.extensions = extractExtensions(operationSpec, options.showExtensions);
     }
+    this.baseUrl = this.servers[0]?.url;
   }
 
   /**

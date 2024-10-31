@@ -17,6 +17,7 @@ export class ContentItems extends React.Component<{
     if (items.length === 0) {
       return null;
     }
+    // UAPI-REDOC_004
     return items.map(item => {
       return <ContentItem key={item.id} item={item} />;
     });
@@ -39,7 +40,8 @@ export class ContentItem extends React.Component<ContentItemProps> {
         break;
       case 'tag':
       case 'section':
-        content = <SectionItem {...this.props} />;
+        // UAPI-REDOC_005
+        // content = <SectionItem {...this.props} />;
         break;
       case 'operation':
         content = <OperationItem item={item as any} />;

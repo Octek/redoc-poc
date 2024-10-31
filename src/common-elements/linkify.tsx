@@ -78,3 +78,59 @@ const StyledShareLink = styled(Link)`
 export function ShareLink(props: { to: string }) {
   return <StyledShareLink to={props.to} />;
 }
+
+const Wrapper = styled.div`
+  display: inline-flex; /* Use inline-flex to keep it on the same line */
+  align-items: center;
+  gap: 10px; /* Space between icon and text */
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #e6f7f9; /* Light background color */
+  border: 1px solid #00bfc4; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+`;
+
+const GlobeIcon = styled.div`
+  font-size: 11.67px; /* Icon size */
+  color: #00bfc4 !important; /* Force the color */
+`;
+
+const Text = styled.div`
+  font-size: 18px; /* Adjust font size */
+  color: #333; /* Gray color for text */
+  font-weight: 700; /* Normal font weight */
+  font-family: 'Segoe UI', sans-serif; /* Set to Segoe UI */
+  text-transform: capitalize;
+`;
+
+interface GlobeIconComponentProps {
+  text: string;
+}
+
+export const GlobeIconComponent: React.FC<GlobeIconComponentProps> = ({ text }) => {
+  return (
+    <Wrapper>
+      <IconContainer>
+        <GlobeIcon>&#127760;</GlobeIcon> {/* Unicode for a globe icon */}
+      </IconContainer>
+      <Text>{text}</Text>
+    </Wrapper>
+  );
+};
+
+const BaseUrlText = styled.div`
+  font-size: 14px; /* Adjust font size */
+  color: #333; /* Gray color for text */
+  font-weight: 400; /* Normal font weight */
+  font-family: 'Segoe UI', sans-serif; /* Set to Segoe UI */
+`;
+
+export const BaseUrlComponent = ({ baseUrl }) => {
+  return <BaseUrlText>{`{Base URL: ${baseUrl}}`}</BaseUrlText>;
+};

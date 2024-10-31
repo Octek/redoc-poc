@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-import { Badge, DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
-import { ShareLink } from '../../common-elements/linkify';
+import { DarkRightPanel, H2, MiddlePanel, Row } from '../../common-elements';
 import { OperationModel } from '../../services/models';
 import styled from '../../styled-components';
 import { CallbacksList } from '../Callbacks';
@@ -18,6 +17,7 @@ import { ResponsesList } from '../Responses/ResponsesList';
 import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
 import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 import { SECTION_ATTR } from '../../services';
+import { GlobeIconComponent, BaseUrlComponent } from '../../common-elements/linkify';
 
 const Description = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.unit * 6}px;
@@ -28,19 +28,8 @@ export interface OperationProps {
 }
 
 export const Operation = observer(({ operation }: OperationProps): JSX.Element => {
-  const {
-    name: summary,
-    description,
-    deprecated,
-    externalDocs,
-    isWebhook,
-    httpVerb,
-    badges,
-  } = operation;
+  const { name: summary, description, externalDocs, isWebhook, baseUrl } = operation;
   const hasDescription = !!(description || externalDocs);
-  const { showWebhookVerb } = React.useContext(OptionsContext);
-  const badgesBefore = badges.filter(({ position }) => position === 'before');
-  const badgesAfter = badges.filter(({ position }) => position === 'after');
 
   return (
     <OptionsContext.Consumer>
@@ -48,28 +37,11 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
         <Row {...{ [SECTION_ATTR]: operation.operationHash }} id={operation.operationHash}>
           <MiddlePanel>
             <H2>
-              <ShareLink to={operation.id} />
-              {badgesBefore.map(({ name, color }) => (
-                <Badge type="primary" key={name} color={color}>
-                  {name}
-                </Badge>
-              ))}
-              {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
-              {isWebhook && (
-                <Badge type="primary">
-                  {' '}
-                  Webhook {showWebhookVerb && httpVerb && '| ' + httpVerb.toUpperCase()}
-                </Badge>
-              )}
-              {badgesAfter.map(({ name, color }) => (
-                <Badge type="primary" key={name} color={color}>
-                  {name}
-                </Badge>
-              ))}
+              {/* UAPI-REDOC_007 */}
+              {/* <ShareLink to={operation.id} /> */}
+              <GlobeIconComponent text={summary} />
             </H2>
-            {options.pathInMiddlePanel && !isWebhook && (
-              <Endpoint operation={operation} inverted={true} />
-            )}
+            <BaseUrlComponent baseUrl={baseUrl} />
             {hasDescription && (
               <Description>
                 {description !== undefined && <Markdown source={description} />}
@@ -82,6 +54,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
             <ResponsesList responses={operation.responses} />
             <CallbacksList callbacks={operation.callbacks} />
           </MiddlePanel>
+          {/* UAPI-REDOC_006 */}
           <DarkRightPanel>
             {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
             <RequestSamples operation={operation} />
